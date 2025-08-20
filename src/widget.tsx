@@ -6,6 +6,7 @@ import {Await} from "./utils/await"
 export const recordWidget: RecordWidget = {
   id: "location-details",
   label: "Location Details",
+  color: "#276CF0",
   Widget: (details) => (
     <Await promise={fetchRecord(details)} fallback={<Widget.Loading />}>
       {(data) => {
