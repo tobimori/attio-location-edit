@@ -1,0 +1,35 @@
+{
+  "name": "location-edit",
+  "description": "Edit Location Attribute",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "attio": "attio",
+    "dev": "attio dev",
+    "build": "attio build",
+    "format": "biome format --write src/",
+    "format:check": "biome format src/",
+    "clean": "rm -rf lib && rm -rf dist",
+    "lint": "npm run lint:biome && npm run lint:attio",
+    "lint:biome": "ATTIO_LINT_MODE='exhaustive' biome lint src/",
+    "lint:biome:fix": "ATTIO_LINT_MODE='exhaustive' biome lint --write src/",
+    "lint:attio": "ATTIO_LINT_MODE='exhaustive' eslint \"src/**/*.{ts,tsx}\" --config eslint.attio.config.js",
+    "lint:attio:fix": "ATTIO_LINT_MODE='exhaustive' eslint \"src/**/*.{ts,tsx}\" --config eslint.attio.config.js --fix",
+    "lint:fix": "npm run lint:biome:fix && npm run lint:attio:fix",
+    "check": "biome check src/",
+    "check:fix": "biome check --write src/",
+    "test": ""
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@types/react": "19.1.10",
+    "node-fetch": "3.3.2",
+    "eslint": "^9.33.0",
+    "@typescript-eslint/parser": "^8.40.0"
+  },
+  "dependencies": {
+    "attio": "^0.0.1-experimental.20250815.2",
+    "react": "19.1.1",
+    "zod": "4.0.17"
+  }
+}
