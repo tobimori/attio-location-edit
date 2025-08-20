@@ -1,12 +1,24 @@
-import {Divider, Forms, Row, TextBlock, useForm, useQuery} from "attio/client"
+import {Divider, Forms, Row, showDialog, showToast, TextBlock, useForm, useQuery} from "attio/client"
 import {useRef} from "react"
 import fetchRecord, {type RecordData} from "./fn/fetch-record.server"
 import retrieveLocation from "./fn/retrieve-location.server"
+import updateRecord from "./fn/update-record.server"
 import getCurrentUser from "./graphql/current-user.graphql"
 import {Await} from "./utils/await"
 import {COUNTRY_CODES} from "./utils/country-code"
-import {useDialog} from "./utils/dialog-provider"
+import {DialogProvider, useDialog} from "./utils/dialog-provider"
 import {mapboxLocationOptionsProvider} from "./utils/mapbox-options-provider"
+
+export function showLocationEditDialog({recordId, object}: {recordId: string; object: string}) {
+  showDialog({
+    title: "Edit Location",
+    Dialog: ({hideDialog}) => (
+      <DialogProvider hideDialog={hideDialog}>
+        <LocationEditDialog recordId={recordId} object={object} />
+      </DialogProvider>
+    ),
+  })
+}
 
 export function LocationEditDialog({recordId, object}: {recordId: string; object: string}) {
   return (
@@ -16,11 +28,13 @@ export function LocationEditDialog({recordId, object}: {recordId: string; object
           <TextBlock>This object does not have any location attributes</TextBlock>
         ) : data.attributes.length === 1 ? (
           <EditDialogForm
+            recordId={recordId}
+            object={object}
             attribute={data.attributes[0]}
             values={data.values[data.attributes[0].value]}
           />
         ) : (
-          <SelectAttributeForm data={data} />
+          <SelectAttributeForm data={data} recordId={recordId} object={object} />
         )
       }
     </Await>
@@ -28,7 +42,7 @@ export function LocationEditDialog({recordId, object}: {recordId: string; object
 }
 
 // if we have more than one attribute, this will show a form to select which attribute to edit
-function SelectAttributeForm({data}: {data: RecordData}) {
+function SelectAttributeForm({data, recordId, object}: {data: RecordData; recordId: string; object: string}) {
   const {Form, Combobox, WithState} = useForm(
     {
       attribute: Forms.string(),
@@ -57,7 +71,7 @@ function SelectAttributeForm({data}: {data: RecordData}) {
             const vals = data.values[attribute.value]
             if (!vals) return <>{/**/}</>
 
-            return <EditDialogForm attribute={attribute} values={vals} />
+            return <EditDialogForm recordId={recordId} object={object} attribute={attribute} values={vals} />
           }
         }
       </WithState>
@@ -66,9 +80,13 @@ function SelectAttributeForm({data}: {data: RecordData}) {
 }
 
 function EditDialogForm({
+  recordId,
+  object,
   attribute,
   values,
 }: {
+  recordId: string
+  object: string
   attribute: RecordData["attributes"][number]
   values: RecordData["values"][number]
 }) {
@@ -107,9 +125,39 @@ function EditDialogForm({
 
   return (
     <Form
-      onSubmit={(values) => {
-        console.log(values)
-        hideDialog()
+      onSubmit={async (values) => {
+        try {
+          await updateRecord({
+            recordId,
+            object,
+            attribute: attribute.value,
+            data: {
+              line_1: values.line_1 || null,
+              line_2: values.line_2 || null,
+              line_3: values.line_3 || null,
+              line_4: values.line_4 || null,
+              locality: values.locality || null,
+              region: values.region || null,
+              postcode: values.postcode || null,
+              country_code: values.country_code || null,
+              latitude: values.latitude || null,
+              longitude: values.longitude || null,
+            },
+          })
+          
+          await showToast({
+            title: "Location updated",
+            variant: "success",
+          })
+          
+          hideDialog()
+        } catch (error) {
+          console.error("Failed to update location:", error)
+          await showToast({
+            title: "Failed to update location",
+            variant: "error",
+          })
+        }
       }}
     >
       <Combobox
