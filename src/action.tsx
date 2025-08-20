@@ -3,7 +3,7 @@ import {showLocationEditDialog} from "./dialog"
 
 export const recordAction: RecordAction = {
   id: "location-edit",
-  label: "Edit",
+  label: "Edit Location Attribute",
   onTrigger: async (details) => {
     showLocationEditDialog(details)
   },
