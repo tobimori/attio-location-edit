@@ -1,13 +1,4 @@
-import {
-  Divider,
-  Forms,
-  Row,
-  showDialog,
-  showToast,
-  TextBlock,
-  useForm,
-  useQuery,
-} from "attio/client"
+import {Divider, Forms, showDialog, showToast, TextBlock, useForm, useQuery} from "attio/client"
 import {useRef, useState} from "react"
 
 import fetchRecord, {type RecordData} from "./fn/fetch-record.server"
@@ -110,7 +101,7 @@ function EditDialogForm({
   const {currentUser} = useQuery(getCurrentUser)
   const lastSearchValue = useRef<string | undefined>(undefined)
 
-  const {Form, Combobox, TextInput, SubmitButton, WithState, change} = useForm(
+  const {Form, Combobox, InputGroup, TextInput, SubmitButton, WithState, change} = useForm(
     {
       search: Forms.string().optional(),
       line_1: Forms.string().optional(),
@@ -229,22 +220,22 @@ function EditDialogForm({
 
       <TextInput name="line_1" label="Line 1" />
       <TextInput name="line_2" label="Line 2" />
-      <Row>
+      <InputGroup>
         <TextInput name="line_3" label="Line 3" />
         <TextInput name="line_4" label="Line 4" />
-      </Row>
-      <Row>
+      </InputGroup>
+      <InputGroup>
         <TextInput name="postcode" label="Postcode" />
         <TextInput name="locality" label="City" />
-      </Row>
-      <Row>
+      </InputGroup>
+      <InputGroup>
         <TextInput name="region" label="State" />
         <Combobox name="country_code" label="Country" options={COUNTRY_CODES} />
-      </Row>
-      <Row>
+      </InputGroup>
+      <InputGroup>
         <TextInput name="latitude" label="Latitude" />
         <TextInput name="longitude" label="Longitude" />
-      </Row>
+      </InputGroup>
       <SubmitButton label="Save changes" />
     </Form>
   )

@@ -1,4 +1,5 @@
 dist
+.attio
 .DS_Store
 node_modules
 tsconfig.tsbuildinfo

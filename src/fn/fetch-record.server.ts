@@ -1,5 +1,6 @@
-import {attioFetch} from "attio/server"
 import {z} from "zod"
+
+import {attioFetch} from "../utils/attio-fetch"
 
 const AttributesSchema = z.object({
   data: z.array(
@@ -38,7 +39,7 @@ export default async function fetchRecord({object, recordId}: {object: string; r
         limit: 500,
       },
     }),
-    attioFetch({
+    attioFetch<{data: {values?: Record<string, unknown[]>}}>({
       method: "GET",
       path: `/objects/${object}/records/${recordId}`,
     }),
@@ -56,7 +57,7 @@ export default async function fetchRecord({object, recordId}: {object: string; r
   // extract location values (single-select, so index 0)
   const values: Record<string, LocationValue> = {}
   for (const attr of attributes) {
-    const value = (recordResponse.data as any).values?.[attr.value]?.[0]
+    const value = recordResponse.data.values?.[attr.value]?.[0]
     if (value) {
       values[attr.value] = LocationValueSchema.parse(value)
     }

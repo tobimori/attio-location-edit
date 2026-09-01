@@ -1,4 +1,4 @@
-import {attioFetch} from "attio/server"
+import {attioFetch} from "../utils/attio-fetch"
 
 export default async function updateRecord({
   recordId,

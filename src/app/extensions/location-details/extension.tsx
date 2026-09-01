@@ -1,10 +1,11 @@
-import {type RecordWidget, Widget} from "attio/client"
+import {Extensions, Widget} from "attio/client"
 
-import {showLocationEditDialog} from "./dialog"
-import fetchRecord from "./fn/fetch-record.server"
-import {Await} from "./utils/await"
+import {showLocationEditDialog} from "../../../dialog"
+import fetchRecord from "../../../fn/fetch-record.server"
+import {Await} from "../../../utils/await"
 
-export const recordWidget: RecordWidget = {
+export default Extensions.defineExtension({
+  type: "record-widget",
   id: "location-details",
   label: "Location Details",
   color: "#276CF0",
@@ -55,4 +56,4 @@ export const recordWidget: RecordWidget = {
       }}
     </Await>
   ),
-}
+})
