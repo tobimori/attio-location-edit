@@ -4,3 +4,6 @@ dist
 node_modules
 tsconfig.tsbuildinfo
 *.graphql.d.ts
+
+.env
+.env.local
