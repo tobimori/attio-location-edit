@@ -3,6 +3,7 @@
   "description": "Edit Location Attribute",
   "private": true,
   "version": "0.0.1",
+  "packageManager": "pnpm@11.21.0",
   "scripts": {
     "attio": "attio",
     "dev": "attio dev",
@@ -12,19 +13,18 @@
     "clean": "rm -rf lib && rm -rf dist",
     "lint": "ATTIO_LINT_MODE='exhaustive' oxlint src/",
     "lint:fix": "ATTIO_LINT_MODE='exhaustive' oxlint --fix src/",
-    "check": "npm run format:check && npm run lint",
-    "check:fix": "npm run format && npm run lint:fix",
+    "check": "pnpm run format:check && pnpm run lint",
+    "check:fix": "pnpm run format && pnpm run lint:fix",
     "test": ""
   },
   "devDependencies": {
-    "@types/react": "19.1.10",
-    "node-fetch": "3.3.2",
+    "@types/react": "19.2.18",
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0"
   },
   "dependencies": {
     "attio": "1.0.1",
-    "react": "19.1.1",
-    "zod": "4.0.17"
+    "react": "19.2.8",
+    "zod": "4.5.4"
   }
 }
