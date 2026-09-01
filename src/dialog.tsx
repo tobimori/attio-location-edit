@@ -65,7 +65,7 @@ function SelectAttributeForm({
   const attribute = data.attributes.find((item) => item.value === selectedAttribute)
   const values = attribute ? data.values[attribute.value] : undefined
 
-  if (attribute && values) {
+  if (attribute) {
     return (
       <EditDialogForm recordId={recordId} object={object} attribute={attribute} values={values} />
     )
@@ -95,7 +95,7 @@ function EditDialogForm({
   recordId: string
   object: string
   attribute: RecordData["attributes"][number]
-  values: RecordData["values"][number]
+  values: RecordData["values"][number] | undefined
 }) {
   const {hideDialog} = useDialog()
   const {currentUser} = useQuery(getCurrentUser)
@@ -117,16 +117,16 @@ function EditDialogForm({
     },
     {
       search: undefined,
-      line_1: values.line_1 ?? undefined,
-      line_2: values.line_2 ?? undefined,
-      line_3: values.line_3 ?? undefined,
-      line_4: values.line_4 ?? undefined,
-      locality: values.locality ?? undefined,
-      region: values.region ?? undefined,
-      postcode: values.postcode ?? undefined,
-      country_code: values.country_code ?? undefined,
-      latitude: values.latitude ?? undefined,
-      longitude: values.longitude ?? undefined,
+      line_1: values?.line_1 ?? undefined,
+      line_2: values?.line_2 ?? undefined,
+      line_3: values?.line_3 ?? undefined,
+      line_4: values?.line_4 ?? undefined,
+      locality: values?.locality ?? undefined,
+      region: values?.region ?? undefined,
+      postcode: values?.postcode ?? undefined,
+      country_code: values?.country_code ?? undefined,
+      latitude: values?.latitude ?? undefined,
+      longitude: values?.longitude ?? undefined,
     }
   )
 

@@ -17,7 +17,11 @@ export default Extensions.defineExtension({
 
         if (!firstAttribute || !locationData) {
           return (
-            <Widget.TextWidget>
+            <Widget.TextWidget
+              onTrigger={() => {
+                showLocationEditDialog(details)
+              }}
+            >
               <Widget.Title>Location</Widget.Title>
               <Widget.Text.Primary>No location data</Widget.Text.Primary>
             </Widget.TextWidget>
