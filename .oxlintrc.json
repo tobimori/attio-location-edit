@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": ["node_modules/", "dist/"],
+  "jsPlugins": [
+    {
+      "name": "attio",
+      "specifier": "attio/lint"
+    }
+  ],
+  "rules": {
+    "attio/attio-client-import": "error",
+    "attio/server-default-export": "error",
+    "attio/form-submit-button": "error",
+    "attio/widget-text-children": "error"
+  }
+}

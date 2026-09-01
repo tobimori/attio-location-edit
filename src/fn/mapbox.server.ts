@@ -1,3 +1,3 @@
-export default async function fetchRecord(recordId: string) {
+export default async function fetchRecord(_recordId: string) {
   return {}
 }

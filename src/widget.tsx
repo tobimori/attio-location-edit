@@ -1,4 +1,5 @@
 import {type RecordWidget, Widget} from "attio/client"
+
 import {showLocationEditDialog} from "./dialog"
 import fetchRecord from "./fn/fetch-record.server"
 import {Await} from "./utils/await"

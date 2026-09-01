@@ -1,4 +1,5 @@
 import {getWorkspaceConnection} from "attio/server"
+
 import type {GetCurrentUserQuery} from "../graphql/current-user.graphql"
 import {MapboxSuggestResponseSchema} from "../utils/mapbox-schemas"
 

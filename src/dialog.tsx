@@ -1,5 +1,15 @@
-import {Divider, Forms, Row, showDialog, showToast, TextBlock, useForm, useQuery} from "attio/client"
-import {useRef} from "react"
+import {
+  Divider,
+  Forms,
+  Row,
+  showDialog,
+  showToast,
+  TextBlock,
+  useForm,
+  useQuery,
+} from "attio/client"
+import {useRef, useState} from "react"
+
 import fetchRecord, {type RecordData} from "./fn/fetch-record.server"
 import retrieveLocation from "./fn/retrieve-location.server"
 import updateRecord from "./fn/update-record.server"
@@ -42,8 +52,17 @@ export function LocationEditDialog({recordId, object}: {recordId: string; object
 }
 
 // if we have more than one attribute, this will show a form to select which attribute to edit
-function SelectAttributeForm({data, recordId, object}: {data: RecordData; recordId: string; object: string}) {
-  const {Form, Combobox, WithState} = useForm(
+function SelectAttributeForm({
+  data,
+  recordId,
+  object,
+}: {
+  data: RecordData
+  recordId: string
+  object: string
+}) {
+  const [selectedAttribute, setSelectedAttribute] = useState<string>()
+  const {Form, Combobox, SubmitButton} = useForm(
     {
       attribute: Forms.string(),
     },
@@ -52,8 +71,17 @@ function SelectAttributeForm({data, recordId, object}: {data: RecordData; record
     }
   )
 
+  const attribute = data.attributes.find((item) => item.value === selectedAttribute)
+  const values = attribute ? data.values[attribute.value] : undefined
+
+  if (attribute && values) {
+    return (
+      <EditDialogForm recordId={recordId} object={object} attribute={attribute} values={values} />
+    )
+  }
+
   return (
-    <Form onSubmit={() => {}}>
+    <Form onSubmit={({attribute}) => setSelectedAttribute(attribute)}>
       <Combobox
         name="attribute"
         label="Select Attribute to edit"
@@ -62,19 +90,7 @@ function SelectAttributeForm({data, recordId, object}: {data: RecordData; record
 
       <Divider />
 
-      <WithState values>
-        {
-          // type infer doesn't work here for some reason!
-          ({values}: {values: {attribute: string}}) => {
-            const attribute = data.attributes.find((attr) => attr.value === values.attribute)
-            if (!attribute) return <>{/**/}</>
-            const vals = data.values[attribute.value]
-            if (!vals) return <>{/**/}</>
-
-            return <EditDialogForm recordId={recordId} object={object} attribute={attribute} values={vals} />
-          }
-        }
-      </WithState>
+      <SubmitButton label="Edit attribute" />
     </Form>
   )
 }
@@ -144,12 +160,12 @@ function EditDialogForm({
               longitude: values.longitude || null,
             },
           })
-          
+
           await showToast({
             title: "Location updated",
             variant: "success",
           })
-          
+
           hideDialog()
         } catch (error) {
           console.error("Failed to update location:", error)

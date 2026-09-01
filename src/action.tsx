@@ -1,4 +1,5 @@
 import type {RecordAction} from "attio/client"
+
 import {showLocationEditDialog} from "./dialog"
 
 export const recordAction: RecordAction = {
